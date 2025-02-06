@@ -98,7 +98,7 @@
             <input type="text" id="answer" placeholder="Your answer" onkeypress="checkEnter(event)">
             <button id="submit-btn" onclick="checkAnswer()">Submit</button>
             <div class="result" id="result"></div>
-            <div class="score" id="score"></div>
+            <div class="score" id="score">Score: 0</div>
         </div>
     </div>
 
@@ -131,7 +131,7 @@
 
             document.getElementById('settings').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'block';
-            document.getElementById('score').textContent = '';
+            document.getElementById('score').textContent = 'Score: 0';
             showQuestion();
         }
 
@@ -162,6 +162,7 @@
                 resultDiv.textContent = `✗ Wrong. The correct answer is: ${correctAnswer}`;
                 resultDiv.className = 'result incorrect';
             }
+            document.getElementById('score').textContent = `Score: ${score}`;
 
             currentQuestionIndex++;
 
@@ -174,13 +175,6 @@
                 submitBtn.style.backgroundColor = '#dc3545';
                 submitBtn.onclick = finishQuiz;
             }
-        }
-
-        function finishQuiz() {
-            const percentage = (score / currentQuestions.length * 100).toFixed(1);
-            document.getElementById('score').textContent = `Final score: ${score}/${currentQuestions.length} (${percentage}%)`;
-            document.getElementById('settings').style.display = 'block';
-            document.getElementById('quiz-container').style.display = 'none';
         }
     </script>
 </body>
