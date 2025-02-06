@@ -102,53 +102,85 @@
     </div>
 
     <script>
-    function checkAnswer() {
-        const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
-        const correctAnswer = currentQuestions[currentQuestionIndex].answer.toLowerCase();
-        const resultDiv = document.getElementById('result');
-        const submitBtn = document.getElementById('submit-btn');
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
 
-        if (userAnswer === correctAnswer) {
-            resultDiv.textContent = '✓ Correct!';
-            resultDiv.className = 'result correct';
-            score++;
-        } else {
-            resultDiv.textContent = `✗ Wrong. The correct answer is: ${correctAnswer}`;
-            resultDiv.className = 'result incorrect';
+        async function startQuiz() {
+            const direction = document.getElementById('direction').value;
+            const categoriesSelect = document.getElementById('categories');
+            const categories = Array.from(categoriesSelect.selectedOptions).map(option => option.value);
+            const numQuestions = document.getElementById('num_questions').value;
+
+            const response = await fetch('/get_quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    direction: direction,
+                    categories: categories,
+                    num_questions: numQuestions
+                })
+            });
+
+            currentQuestions = await response.json();
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById('settings').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('score').textContent = '';
+            showQuestion();
         }
 
-        currentQuestionIndex++;
+        function showQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            document.getElementById('question').textContent = `Translate (${question.category}): ${question.question}`;
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('answer').focus();
 
-        if (currentQuestionIndex < currentQuestions.length) {
-            submitBtn.textContent = 'Next';
-            submitBtn.style.backgroundColor = '#007bff';
-            submitBtn.onclick = showQuestion;
-        } else {
-            submitBtn.textContent = 'Finish Quiz';
-            submitBtn.style.backgroundColor = '#dc3545';
-            submitBtn.onclick = finishQuiz;
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.textContent = 'Submit';
+            submitBtn.style.backgroundColor = '#4CAF50';
+            submitBtn.onclick = checkAnswer;
         }
-    }
 
-    function showQuestion() {
-        const question = currentQuestions[currentQuestionIndex];
-        document.getElementById('question').textContent = `Translate (${question.category}): ${question.question}`;
-        document.getElementById('answer').value = '';
-        document.getElementById('result').textContent = '';
-        document.getElementById('answer').focus();
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+            const correctAnswer = currentQuestions[currentQuestionIndex].answer.toLowerCase();
+            const resultDiv = document.getElementById('result');
+            const submitBtn = document.getElementById('submit-btn');
 
-        const submitBtn = document.getElementById('submit-btn');
-        submitBtn.textContent = 'Submit';
-        submitBtn.style.backgroundColor = '#4CAF50';
-        submitBtn.onclick = checkAnswer;
-    }
+            if (userAnswer === correctAnswer) {
+                resultDiv.textContent = '✓ Correct!';
+                resultDiv.className = 'result correct';
+                score++;
+            } else {
+                resultDiv.textContent = `✗ Wrong. The correct answer is: ${correctAnswer}`;
+                resultDiv.className = 'result incorrect';
+            }
 
-    function finishQuiz() {
-        const percentage = (score / currentQuestions.length * 100).toFixed(1);
-        document.getElementById('score').textContent = `Final score: ${score}/${currentQuestions.length} (${percentage}%)`;
-        document.getElementById('settings').style.display = 'block';
-        document.getElementById('quiz-container').style.display = 'none';
-    }
-</script>
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                submitBtn.textContent = 'Next';
+                submitBtn.style.backgroundColor = '#007bff';
+                submitBtn.onclick = showQuestion;
+            } else {
+                submitBtn.textContent = 'Finish Quiz';
+                submitBtn.style.backgroundColor = '#dc3545';
+                submitBtn.onclick = finishQuiz;
+            }
+        }
+
+        function finishQuiz() {
+            const percentage = (score / currentQuestions.length * 100).toFixed(1);
+            document.getElementById('score').textContent = `Final score: ${score}/${currentQuestions.length} (${percentage}%)`;
+            document.getElementById('settings').style.display = 'block';
+            document.getElementById('quiz-container').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
