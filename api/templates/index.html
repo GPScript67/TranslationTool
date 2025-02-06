@@ -1,0 +1,183 @@
+# api/templates/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .settings {
+            margin-bottom: 20px;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .quiz-container {
+            display: none;
+        }
+        .question {
+            font-size: 24px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .correct {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .incorrect {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .score {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Japanese Vocabulary Quiz</h1>
+        
+        <div class="settings" id="settings">
+            <select id="direction">
+                <option value="jp_to_en">Japanese to English</option>
+                <option value="en_to_jp">English to Japanese</option>
+            </select>
+            
+            <select id="categories" multiple size="5">
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+            
+            <input type="number" id="num_questions" min="1" max="50" value="10" placeholder="Number of questions">
+            
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+        
+        <div class="quiz-container" id="quiz-container">
+            <div class="question" id="question"></div>
+            <input type="text" id="answer" placeholder="Your answer" onkeypress="checkEnter(event)">
+            <button onclick="checkAnswer()">Submit</button>
+            <div class="result" id="result"></div>
+            <div class="score" id="score"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        async function startQuiz() {
+            const direction = document.getElementById('direction').value;
+            const categoriesSelect = document.getElementById('categories');
+            const categories = Array.from(categoriesSelect.selectedOptions).map(option => option.value);
+            const numQuestions = document.getElementById('num_questions').value;
+
+            const response = await fetch('/get_quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    direction: direction,
+                    categories: categories,
+                    num_questions: numQuestions
+                })
+            });
+
+            currentQuestions = await response.json();
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById('settings').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('score').textContent = '';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            document.getElementById('question').textContent = 
+                `Translate (${question.category}): ${question.question}`;
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('answer').focus();
+        }
+
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+            const correctAnswer = currentQuestions[currentQuestionIndex].answer.toLowerCase();
+            const resultDiv = document.getElementById('result');
+
+            if (userAnswer === correctAnswer) {
+                resultDiv.textContent = '✓ Correct!';
+                resultDiv.className = 'result correct';
+                score++;
+            } else {
+                resultDiv.textContent = `✗ Wrong. The correct answer is: ${correctAnswer}`;
+                resultDiv.className = 'result incorrect';
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                setTimeout(showQuestion, 1500);
+            } else {
+                const percentage = (score / currentQuestions.length * 100).toFixed(1);
+                document.getElementById('score').textContent = 
+                    `Final score: ${score}/${currentQuestions.length} (${percentage}%)`;
+                setTimeout(() => {
+                    document.getElementById('settings').style.display = 'block';
+                    document.getElementById('quiz-container').style.display = 'none';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
