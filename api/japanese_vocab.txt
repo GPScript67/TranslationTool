@@ -1,0 +1,416 @@
+# Category: Greetings and Basic Expressions
+こんにちは,hello
+おはようございます,good morning
+こんばんは,good evening
+さようなら,goodbye
+おやすみなさい,good night
+ありがとうございます,thank you
+どういたしまして,you're welcome
+すみません,excuse me/sorry
+はい,yes
+いいえ,no
+お願いします,please
+どうぞ,please (offering)
+失礼します,excuse me (leaving)
+ごめんなさい,I'm sorry
+はじめまして,nice to meet you
+よろしくお願いします,please treat me well
+お疲れ様です,good work
+いただきます,thanks for the food (before eating)
+ごちそうさま,thanks for the food (after eating)
+おめでとう,congratulations
+
+# Category: Basic Verbs
+行く(いく),to go
+来る(くる),to come
+見る(みる),to see/watch
+聞く(きく),to hear/listen
+食べる(たべる),to eat
+飲む(のむ),to drink
+寝る(ねる),to sleep
+起きる(おきる),to wake up
+話す(はなす),to speak
+書く(かく),to write
+読む(よむ),to read
+買う(かう),to buy
+売る(うる),to sell
+作る(つくる),to make
+使う(つかう),to use
+待つ(まつ),to wait
+笑う(わらう),to laugh
+泣く(なく),to cry
+走る(はしる),to run
+歩く(あるく),to walk
+座る(すわる),to sit
+立つ(たつ),to stand
+開ける(あける),to open
+閉める(しめる),to close
+始める(はじめる),to begin
+終わる(おわる),to end
+教える(おしえる),to teach
+学ぶ(まなぶ),to learn
+働く(はたらく),to work
+休む(やすむ),to rest
+遊ぶ(あそぶ),to play
+返す(かえす),to return something
+帰る(かえる),to return home
+切る(きる),to cut
+洗う(あらう),to wash
+会う(あう),to meet
+思う(おもう),to think
+考える(かんがえる),to consider
+忘れる(わすれる),to forget
+覚える(おぼえる),to remember
+
+# Category: Time-Related Words
+時間(じかん),time
+分(ふん),minute
+秒(びょう),second
+今(いま),now
+後(あと),after/later
+前(まえ),before
+朝(あさ),morning
+昼(ひる),noon/afternoon
+夜(よる),night
+夕方(ゆうがた),evening
+今日(きょう),today
+明日(あした),tomorrow
+昨日(きのう),yesterday
+今週(こんしゅう),this week
+来週(らいしゅう),next week
+先週(せんしゅう),last week
+今月(こんげつ),this month
+来月(らいげつ),next month
+去年(きょねん),last year
+来年(らいねん),next year
+一月(いちがつ),January
+二月(にがつ),February
+三月(さんがつ),March
+四月(しがつ),April
+五月(ごがつ),May
+六月(ろくがつ),June
+七月(しちがつ),July
+八月(はちがつ),August
+九月(くがつ),September
+十月(じゅうがつ),October
+十一月(じゅういちがつ),November
+十二月(じゅうにがつ),December
+春(はる),spring
+夏(なつ),summer
+秋(あき),autumn
+冬(ふゆ),winter
+季節(きせつ),season
+年(とし),year
+世紀(せいき),century
+週末(しゅうまつ),weekend
+
+# Category: Numbers and Counting
+一(いち),one
+二(に),two
+三(さん),three
+四(よん),four
+五(ご),five
+六(ろく),six
+七(なな),seven
+八(はち),eight
+九(きゅう),nine
+十(じゅう),ten
+百(ひゃく),hundred
+千(せん),thousand
+万(まん),ten thousand
+億(おく),hundred million
+一つ(ひとつ),one thing
+二つ(ふたつ),two things
+三つ(みっつ),three things
+四つ(よっつ),four things
+五つ(いつつ),five things
+何(なん),what number
+半分(はんぶん),half
+全部(ぜんぶ),all
+少し(すこし),a little
+たくさん,many/much
+もっと,more
+最も(もっとも),most
+数(かず),number
+番号(ばんごう),number (serial)
+度(ど),degree
+
+# Category: Family Members
+家族(かぞく),family
+父(ちち),father
+母(はは),mother
+両親(りょうしん),parents
+兄(あに),older brother
+姉(あね),older sister
+弟(おとうと),younger brother
+妹(いもうと),younger sister
+祖父(そふ),grandfather
+祖母(そぼ),grandmother
+夫(おっと),husband
+妻(つま),wife
+息子(むすこ),son
+娘(むすめ),daughter
+叔父(おじ),uncle
+叔母(おば),aunt
+従兄弟(いとこ),cousin
+甥(おい),nephew
+姪(めい),niece
+子供(こども),child
+赤ちゃん,baby
+孫(まご),grandchild
+親戚(しんせき),relative
+婚約者(こんやくしゃ),fiancé/fiancée
+義理の親(ぎりのおや),parents-in-law
+
+# Category: Body Parts
+頭(あたま),head
+髪(かみ),hair
+顔(かお),face
+目(め),eye
+鼻(はな),nose
+口(くち),mouth
+耳(みみ),ear
+首(くび),neck
+肩(かた),shoulder
+腕(うで),arm
+手(て),hand
+指(ゆび),finger
+爪(つめ),nail
+胸(むね),chest
+背中(せなか),back
+お腹(おなか),stomach
+足(あし),leg/foot
+膝(ひざ),knee
+かかと,heel
+つま先(つまさき),toe
+歯(は),tooth
+舌(した),tongue
+喉(のど),throat
+心臓(しんぞう),heart
+肺(はい),lung
+脳(のう),brain
+筋肉(きんにく),muscle
+骨(ほね),bone
+血(ち),blood
+皮膚(ひふ),skin
+
+# Category: Colors
+赤(あか),red
+青(あお),blue
+黄色(きいろ),yellow
+緑(みどり),green
+紫(むらさき),purple
+桃色(ももいろ),pink
+茶色(ちゃいろ),brown
+灰色(はいいろ),gray
+白(しろ),white
+黒(くろ),black
+金色(きんいろ),gold
+銀色(ぎんいろ),silver
+オレンジ色,orange
+水色(みずいろ),light blue
+紺色(こんいろ),navy blue
+
+# Category: Weather and Nature
+天気(てんき),weather
+晴れ(はれ),sunny
+雨(あめ),rain
+雪(ゆき),snow
+曇り(くもり),cloudy
+風(かぜ),wind
+雷(かみなり),thunder
+霧(きり),fog
+虹(にじ),rainbow
+気温(きおん),temperature
+暑い(あつい),hot
+寒い(さむい),cold
+暖かい(あたたかい),warm
+涼しい(すずしい),cool
+湿気(しっけ),humidity
+台風(たいふう),typhoon
+地震(じしん),earthquake
+山(やま),mountain
+川(かわ),river
+海(うみ),sea
+湖(みずうみ),lake
+森(もり),forest
+砂漠(さばく),desert
+島(しま),island
+空(そら),sky
+雲(くも),cloud
+星(ほし),star
+月(つき),moon
+太陽(たいよう),sun
+木(き),tree
+花(はな),flower
+草(くさ),grass
+葉(は),leaf
+根(ね),root
+土(つち),soil
+
+# Category: Animals
+犬(いぬ),dog
+猫(ねこ),cat
+鳥(とり),bird
+魚(さかな),fish
+馬(うま),horse
+牛(うし),cow
+豚(ぶた),pig
+羊(ひつじ),sheep
+鶏(にわとり),chicken
+兎(うさぎ),rabbit
+鼠(ねずみ),mouse
+虎(とら),tiger
+象(ぞう),elephant
+キリン,giraffe
+ライオン,lion
+熊(くま),bear
+猿(さる),monkey
+狼(おおかみ),wolf
+蛇(へび),snake
+竜(りゅう),dragon
+蝶(ちょう),butterfly
+蜂(はち),bee
+蟻(あり),ant
+蜘蛛(くも),spider
+ペット,pet
+
+# Category: Food and Drink
+ご飯(ごはん),rice/meal
+パン,bread
+肉(にく),meat
+魚(さかな),fish
+野菜(やさい),vegetables
+果物(くだもの),fruit
+卵(たまご),egg
+牛乳(ぎゅうにゅう),milk
+水(みず),water
+お茶(おちゃ),tea
+コーヒー,coffee
+ジュース,juice
+ビール,beer
+お酒(おさけ),alcohol
+スープ,soup
+サラダ,salad
+デザート,dessert
+アイスクリーム,ice cream
+チョコレート,chocolate
+ケーキ,cake
+寿司(すし),sushi
+ラーメン,ramen
+うどん,udon
+そば,soba
+天ぷら,tempura
+カレー,curry
+ハンバーガー,hamburger
+ピザ,pizza
+フライドポテト,french fries
+サンドイッチ,sandwich
+朝食(ちょうしょく),breakfast
+昼食(ちゅうしょく),lunch
+夕食(ゆうしょく),dinner
+レストラン,restaurant
+料理(りょうり),cooking
+味(あじ),taste
+塩(しお),salt
+砂糖(さとう),sugar
+醤油(しょうゆ),soy sauce
+味噌(みそ),miso
+
+# Category: Clothing
+服(ふく),clothes
+シャツ,shirt
+ズボン,pants
+スカート,skirt
+ドレス,dress
+セーター,sweater
+ジャケット,jacket
+コート,coat
+靴(くつ),shoes
+靴下(くつした),socks
+帽子(ぼうし),hat
+手袋(てぶくろ),gloves
+スーツ,suit
+ネクタイ,tie
+ベルト,belt
+財布(さいふ),wallet
+かばん,bag
+傘(かさ),umbrella
+眼鏡(めがね),glasses
+時計(とけい),watch
+着物(きもの),kimono
+浴衣(ゆかた),yukata
+
+# Category: House and Furniture
+家(いえ),house
+部屋(へや),room
+玄関(げんかん),entrance
+台所(だいどころ),kitchen
+寝室(しんしつ),bedroom
+浴室(よくしつ),bathroom
+トイレ,toilet
+階段(かいだん),stairs
+窓(まど),window
+ドア,door
+壁(かべ),wall
+天井(てんじょう),ceiling
+床(ゆか),floor
+屋根(やね),roof
+庭(にわ),garden
+テーブル,table
+椅子(いす),chair
+ベッド,bed
+ソファ,sofa
+本棚(ほんだな),bookshelf
+冷蔵庫(れいぞうこ),refrigerator
+洗濯機(せんたくき),washing machine
+テレビ,television
+エアコン,air conditioner
+電話(でんわ),telephone
+鏡(かがみ),mirror
+カーテン,curtain
+照明(しょうめい),lighting
+玄関マット,doormat
+郵便箱(ゆうびんばこ),mailbox
+
+# Category: School and Education
+学校(がっこう),school
+大学(だいがく),university
+教室(きょうしつ),classroom
+図書館(としょかん),library
+職員室(しょくいんしつ),staff room
+体育館(たいいくかん),gymnasium
+運動場(うんどうじょう),playground
+講堂(こうどう),auditorium
+食堂(しょくどう),cafeteria
+保健室(ほけんしつ),nurse's office
+学生(がくせい),student
+先生(せんせい),teacher
+校長(こうちょう),principal
+クラスメート,classmate
+授業(じゅぎょう),class/lesson
+宿題(しゅくだい),homework
+試験(しけん),exam
+成績(せいせき),grades
+教科書(きょうかしょ),textbook
+ノート,notebook
+鉛筆(えんぴつ),pencil
+消しゴム,eraser
+定規(じょうぎ),ruler
+はさみ,scissors
+かばん,school bag
+制服(せいふく),uniform
+卒業(そつぎょう),graduation
+入学(にゅうがく),enrollment
+留学(りゅうがく),study abroad
+奨学金(しょうがくきん),scholarship
+
+# Category: Work and Business
+仕事(しごと),work/job
+会社(かいしゃ),company
+オフィス,office
+会議(かいぎ),meeting
+社長(しゃちょう),company president
+部長(ぶちょう),department head
+課長(かちょう),section chief
+同僚(どうりょう
