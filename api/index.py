@@ -1,42 +1,26 @@
 from flask import Flask, render_template, request, jsonify
-import random
+import pandas as pd
 
 app = Flask(__name__)
 
 def load_vocabulary():
+    df = pd.read_csv('japanese_vocabulary_clean.csv')
     vocabulary = {}
-    current_category = ""
     
-    with open('api/japanese_vocabulary_updated.txt', 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-        i = 0
-        while i < len(lines):
-            line = lines[i].strip()
-            if not line:
-                i += 1
-                continue
-            if line.startswith('Category:'):
-                current_category = line.replace('Category:', '').strip()
-                i += 4  # Skip the header and separator line
-                vocabulary[current_category] = []
-            else:
-                parts = [p.strip() for p in line.split()]
-                if len(parts) >= 4:
-                    english = parts[0]
-                    kanji = parts[2] if parts[2] != "-" else ""
-                    kana = parts[3] if parts[3] != "-" else ""
-                    
-                    # Format Japanese text as "Kanji (Kana)"
-                    japanese_text = kanji
-                    if kana:
-                        japanese_text = f"{kanji} ({kana})"
-                    
-                    vocabulary[current_category].append({
-                        'english': english,
-                        'japanese': japanese_text,
-                        'kanji': kanji,  # Store separately for speech
-                    })
-            i += 1
+    for category in df['category'].unique():
+        cat_words = df[df['category'] == category]
+        vocabulary[category] = []
+        
+        for _, row in cat_words.iterrows():
+            japanese_text = row['japanese']
+            if pd.notna(row['kana']):
+                japanese_text = f"{row['japanese']} ({row['kana']})"
+                
+            vocabulary[category].append({
+                'english': row['english'],
+                'japanese': japanese_text,
+                'kanji': row['japanese'],  # For speech synthesis
+            })
     
     return vocabulary
 
