@@ -471,7 +471,9 @@
             const question = currentQuestions[currentQuestionIndex];
             document.getElementById('question').textContent = `Translate (${question.category}): ${question.question}`;
             document.getElementById('answer').value = '';
-            document.getElementById('result').textContent = '';
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('result').className = 'result';
+            document.getElementById('result').style.backgroundColor = '';
             document.getElementById('answer').focus();
         
             const submitBtn = document.getElementById('submit-btn');
@@ -479,14 +481,12 @@
             submitBtn.style.backgroundColor = '#4CAF50';
             submitBtn.onclick = checkAnswer;
         
-            // Show audio button for Japanese to English mode
             const audioBtn = document.getElementById('audio-btn');
             const mode = document.getElementById('mode').value;
             audioBtn.style.display = mode === 'jp_to_en' ? 'block' : 'none';
             audioBtn.disabled = false;
         
             if (mode === 'jp_to_en') {
-                // Small delay to ensure the audio button is visible
                 setTimeout(playAudio, 300);
             }
         }
