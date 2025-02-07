@@ -1,4 +1,3 @@
-# api/index.py
 from flask import Flask, render_template, request, jsonify
 import random
 
@@ -8,17 +7,36 @@ def load_vocabulary():
     vocabulary = {}
     current_category = ""
     
-    with open('api/japanese_vocab.txt', 'r', encoding='utf-8') as file:
-        for line in file:
-            line = line.strip()
+    with open('api/japanese_vocabulary_updated.txt', 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
             if not line:
+                i += 1
                 continue
-            if line.startswith('#'):
-                current_category = line.replace('# Category: ', '').replace('# ', '')
+            if line.startswith('Category:'):
+                current_category = line.replace('Category:', '').strip()
+                i += 4  # Skip the header and separator line
                 vocabulary[current_category] = []
-            elif ',' in line:
-                japanese, english = line.split(',')
-                vocabulary[current_category].append((japanese, english))
+            else:
+                parts = [p.strip() for p in line.split()]
+                if len(parts) >= 4:
+                    english = parts[0]
+                    kanji = parts[2] if parts[2] != "-" else ""
+                    kana = parts[3] if parts[3] != "-" else ""
+                    
+                    # Format Japanese text as "Kanji (Kana)"
+                    japanese_text = kanji
+                    if kana:
+                        japanese_text = f"{kanji} ({kana})"
+                    
+                    vocabulary[current_category].append({
+                        'english': english,
+                        'japanese': japanese_text,
+                        'kanji': kanji,  # Store separately for speech
+                    })
+            i += 1
     
     return vocabulary
 
@@ -36,48 +54,49 @@ def get_words():
     mode = data.get('mode', 'quiz')
     
     if mode == 'flashcards':
-        # For flashcards, we want all words from selected categories
         if categories:
-            words = [(jp, en, cat) for cat in categories 
-                    for jp, en in VOCABULARY.get(cat, [])]
+            words = [word for cat in categories 
+                    for word in VOCABULARY.get(cat, [])]
         else:
-            words = [(jp, en, cat) for cat, words in VOCABULARY.items() 
-                    for jp, en in words]
+            words = [word for cat, word_list in VOCABULARY.items() 
+                    for word in word_list]
         
         return jsonify([{
-            'japanese': jp,
-            'english': en,
-            'category': cat
-        } for jp, en, cat in words])
+            'japanese': word['japanese'],
+            'english': word['english'],
+            'category': cat,
+            'kanji': word['kanji']
+        } for word in words])
     
     else:
-        # Original quiz logic
         num_questions = int(data.get('num_questions', 10))
         direction = data.get('direction', 'jp_to_en')
         
         if categories:
-            all_words = [(jp, en, cat) for cat in categories 
-                        for jp, en in VOCABULARY.get(cat, [])]
+            all_words = [(word, cat) for cat in categories 
+                        for word in VOCABULARY.get(cat, [])]
         else:
-            all_words = [(jp, en, cat) for cat, words in VOCABULARY.items() 
-                        for jp, en in words]
+            all_words = [(word, cat) for cat, words in VOCABULARY.items() 
+                        for word in words]
         
         num_questions = min(num_questions, len(all_words))
         questions = random.sample(all_words, num_questions)
         
         quiz_questions = []
-        for jp, en, category in questions:
+        for word, category in questions:
             if direction == 'jp_to_en':
                 quiz_questions.append({
-                    'question': jp,
-                    'answer': en,
-                    'category': category
+                    'question': word['japanese'],
+                    'answer': word['english'],
+                    'category': category,
+                    'kanji': word['kanji']
                 })
             else:
                 quiz_questions.append({
-                    'question': en,
-                    'answer': jp,
-                    'category': category
+                    'question': word['english'],
+                    'answer': word['japanese'],
+                    'category': category,
+                    'kanji': word['kanji']
                 })
         
         return jsonify(quiz_questions)
