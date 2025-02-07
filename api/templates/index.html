@@ -21,6 +21,7 @@
         h1 {
             color: #333;
             text-align: center;
+            margin-bottom: 30px;
         }
         .settings {
             margin-bottom: 20px;
@@ -40,6 +41,7 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #45a049;
@@ -70,11 +72,60 @@
             font-size: 18px;
             margin-top: 20px;
         }
+        .audio-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: none;
+            padding: 0;
+            font-size: 20px;
+        }
+        .audio-button:hover {
+            background-color: #0056b3;
+        }
+        .audio-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #speech-not-supported {
+            display: none;
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .quiz-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        #answer {
+            width: 100%;
+            max-width: 300px;
+        }
+        #submit-btn {
+            width: auto;
+            min-width: 200px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Japanese Vocabulary Quiz</h1>
+        
+        <div id="speech-not-supported">
+            Speech synthesis is not supported in your browser. Please try using a modern browser like Chrome or Edge.
+        </div>
         
         <div class="settings" id="settings">
             <select id="direction">
@@ -95,16 +146,40 @@
         
         <div class="quiz-container" id="quiz-container">
             <div class="question" id="question"></div>
-            <input type="text" id="answer" placeholder="Your answer" onkeypress="checkEnter(event)">
-            <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+            <div class="quiz-controls">
+                <button class="audio-button" id="audio-btn" onclick="playAudio()">🔊</button>
+                <input type="text" id="answer" placeholder="Your answer" onkeypress="checkEnter(event)">
+                <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+            </div>
             <div class="result" id="result"></div>
             <div class="score" id="score"></div>
         </div>
     </div>
+
     <script>
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
+        let synthesis = window.speechSynthesis;
+        let speaking = false;
+
+        // Load Japanese voice if available
+        let japaneseVoice = null;
+        
+        function loadVoices() {
+            const voices = synthesis.getVoices();
+            japaneseVoice = voices.find(voice => voice.lang.startsWith('ja'));
+        }
+        
+        if (synthesis) {
+            // Chrome loads voices asynchronously
+            if (synthesis.onvoiceschanged !== undefined) {
+                synthesis.onvoiceschanged = loadVoices;
+            }
+            loadVoices();
+        } else {
+            document.getElementById('speech-not-supported').style.display = 'block';
+        }
 
         async function startQuiz() {
             const direction = document.getElementById('direction').value;
@@ -134,6 +209,43 @@
             showQuestion();
         }
 
+        function playAudio() {
+            if (!synthesis || speaking) return;
+
+            const question = currentQuestions[currentQuestionIndex];
+            if (document.getElementById('direction').value === 'jp_to_en') {
+                const audioBtn = document.getElementById('audio-btn');
+                audioBtn.disabled = true;
+                speaking = true;
+
+                // Stop any ongoing speech
+                synthesis.cancel();
+
+                // Create a new utterance
+                const utterance = new SpeechSynthesisUtterance(question.question);
+                utterance.lang = 'ja-JP';
+                if (japaneseVoice) {
+                    utterance.voice = japaneseVoice;
+                }
+                
+                // Enable button after speech ends
+                utterance.onend = () => {
+                    audioBtn.disabled = false;
+                    speaking = false;
+                };
+
+                // Enable button if error occurs
+                utterance.onerror = () => {
+                    audioBtn.disabled = false;
+                    speaking = false;
+                    console.error('Speech synthesis error');
+                };
+
+                // Speak the word
+                synthesis.speak(utterance);
+            }
+        }
+
         function showQuestion() {
             const question = currentQuestions[currentQuestionIndex];
             document.getElementById('question').textContent = `Translate (${question.category}): ${question.question}`;
@@ -141,21 +253,64 @@
             document.getElementById('result').textContent = '';
             document.getElementById('answer').focus();
 
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.textContent = 'Submit';
+            submitBtn.style.backgroundColor = '#4CAF50';
+            submitBtn.onclick = checkAnswer;
+
+            const audioBtn = document.getElementById('audio-btn');
+            audioBtn.style.display = document.getElementById('direction').value === 'jp_to_en' ? 'block' : 'none';
+            audioBtn.disabled = false;
+
             if (document.getElementById('direction').value === 'jp_to_en') {
-                setTimeout(() => speakJapanese(question.question), 500);
+                setTimeout(playAudio, 500);
             }
         }
 
-        function speakJapanese(text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ja-JP';
-            utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'ja-JP');
-            speechSynthesis.speak(utterance);
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
         }
 
-        window.speechSynthesis.onvoiceschanged = () => {
-            speechSynthesis.getVoices();
-        };
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+            const correctAnswer = currentQuestions[currentQuestionIndex].answer.toLowerCase();
+            const resultDiv = document.getElementById('result');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (synthesis && speaking) {
+                synthesis.cancel();
+                speaking = false;
+                document.getElementById('audio-btn').disabled = false;
+            }
+
+            if (userAnswer === correctAnswer) {
+                resultDiv.textContent = '✓ Correct!';
+                resultDiv.className = 'result correct';
+                score++;
+            } else {
+                resultDiv.textContent = `✗ Wrong. The correct answer is: ${correctAnswer}`;
+                resultDiv.className = 'result incorrect';
+            }
+
+            currentQuestionIndex++;
+            updateScore();
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                submitBtn.textContent = 'Next';
+                submitBtn.style.backgroundColor = '#007bff';
+                submitBtn.onclick = showQuestion;
+            } else {
+                submitBtn.textContent = 'Finish Quiz';
+                submitBtn.style.backgroundColor = '#dc3545';
+                submitBtn.onclick = () => window.location.href = '/';
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = `Score: ${score}/${currentQuestionIndex}`;
+        }
     </script>
 </body>
 </html>
