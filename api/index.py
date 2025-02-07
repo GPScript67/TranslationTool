@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 def load_vocabulary():
     vocabulary = {}
-    file_path = os.path.join('api', 'japanese_vocabulary_clean.csv')
+    file_path = os.path.join('api', 'japanese_vocabulary_final.csv')
     
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
