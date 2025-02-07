@@ -318,8 +318,17 @@
         }
 
         function flipCard() {
-            document.getElementById('flash-card').classList.toggle('flipped');
-        }
+    const card = document.getElementById('flash-card');
+    const isFlipped = card.classList.contains('flipped');
+    card.classList.toggle('flipped');
+    
+    // If we're flipping to show the Japanese side (back), play the audio
+    if (!isFlipped) {  // If it wasn't flipped before (showing English), now we're showing Japanese
+        setTimeout(playAudio, 300);  // Small delay to let the animation complete
+    }
+}
+
+// The rest of your JavaScript code remains the same
 
         function previousCard() {
             if (currentCardIndex > 0) {
