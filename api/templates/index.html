@@ -105,7 +105,16 @@
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
+        let voices = [];
 
+        function loadVoices() {
+            voices = speechSynthesis.getVoices();
+        }
+        
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+        
         async function startQuiz() {
             const direction = document.getElementById('direction').value;
             const categoriesSelect = document.getElementById('categories');
@@ -149,8 +158,11 @@
         function speakJapanese(text) {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'ja-JP';
+            utterance.voice = voices.find(voice => voice.lang === 'ja-JP');
             speechSynthesis.speak(utterance);
         }
+
+        loadVoices();
     </script>
 </body>
 </html>
