@@ -241,7 +241,7 @@
             <div class="question" id="question"></div>
             <div class="quiz-controls">
                 <button class="audio-button" id="audio-btn" onclick="playAudio()">🔊</button>
-                <input type="text" id="answer" placeholder="Your answer">
+                <input type="text" id="answer" placeholder="Your answer" onkeypress="checkEnter(event)">
                 <button id="submit-btn" onclick="checkAnswer()">Submit</button>
             </div>
             <div class="result" id="result"></div>
