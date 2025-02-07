@@ -1,9 +1,8 @@
 # api/index.py
-from flask import Flask, render_template, request, jsonify, send_file
-from gtts import gTTS
+from flask import Flask, render_template, request, jsonify
 import random
-import os
-import tempfile
+import requests
+from urllib.parse import quote
 
 app = Flask(__name__)
 
@@ -26,25 +25,11 @@ def load_vocabulary():
     return vocabulary
 
 VOCABULARY = load_vocabulary()
-TEMP_DIR = tempfile.gettempdir()
 
 @app.route('/')
 def home():
     categories = list(VOCABULARY.keys())
     return render_template('index.html', categories=categories)
-
-@app.route('/get_audio/<word>')
-def get_audio(word):
-    # Create a unique filename for this word
-    filename = f"speech_{hash(word)}.mp3"
-    filepath = os.path.join(TEMP_DIR, filename)
-    
-    # Generate audio file if it doesn't exist
-    if not os.path.exists(filepath):
-        tts = gTTS(text=word, lang='ja')
-        tts.save(filepath)
-    
-    return send_file(filepath, mimetype='audio/mp3')
 
 @app.route('/get_quiz', methods=['POST'])
 def get_quiz():
@@ -69,7 +54,8 @@ def get_quiz():
             quiz_questions.append({
                 'question': jp,
                 'answer': en,
-                'category': category
+                'category': category,
+                'audio_url': f'https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q={quote(jp)}'
             })
         else:
             quiz_questions.append({
