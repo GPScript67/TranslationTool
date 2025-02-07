@@ -1,19 +1,21 @@
 from flask import Flask, render_template, request, jsonify
-import pandas as pd
+import random
+import csv
 
 app = Flask(__name__)
 
 def load_vocabulary():
-    df = pd.read_csv('japanese_vocabulary_clean.csv')
     vocabulary = {}
     
-    for category in df['category'].unique():
-        cat_words = df[df['category'] == category]
-        vocabulary[category] = []
-        
-        for _, row in cat_words.iterrows():
+    with open('japanese_vocabulary_clean.csv', 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            category = row['category']
+            if category not in vocabulary:
+                vocabulary[category] = []
+                
             japanese_text = row['japanese']
-            if pd.notna(row['kana']):
+            if row['kana']:
                 japanese_text = f"{row['japanese']} ({row['kana']})"
                 
             vocabulary[category].append({
