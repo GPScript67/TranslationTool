@@ -61,6 +61,13 @@
             margin: 20px 0;
             text-align: center;
         }
+        .kanji {
+            font-size: 32px;
+        }
+        .kana {
+            font-size: 18px;
+            color: #666;
+        }
         .result {
             margin: 10px 0;
             padding: 10px;
@@ -412,79 +419,79 @@
         }
 
         function playAudio() {
-    if (!synthesis || speaking) return;
+            if (!synthesis || speaking) return;
+        
+            let textToSpeak;
+            const mode = document.getElementById('mode').value;
+            
+            if (mode === 'flashcards') {
+                textToSpeak = flashCards[currentCardIndex].kanji;
+            } else if (mode === 'jp_to_en') {
+                textToSpeak = currentQuestions[currentQuestionIndex].kanji;
+            } else if (mode === 'en_to_jp') {
+                textToSpeak = currentQuestions[currentQuestionIndex].kanji;
+            }
 
-    let textToSpeak;
-    const mode = document.getElementById('mode').value;
-    
-    if (mode === 'flashcards') {
-        textToSpeak = flashCards[currentCardIndex].japanese;
-    } else if (mode === 'jp_to_en') {
-        textToSpeak = currentQuestions[currentQuestionIndex].question;
-    } else if (mode === 'en_to_jp') {
-        textToSpeak = currentQuestions[currentQuestionIndex].answer;
-    }
-
-    if (!textToSpeak) return;
-
-    const audioBtn = mode === 'flashcards' 
-        ? document.getElementById('flash-card-audio-btn')
-        : document.getElementById('audio-btn');
-    
-    audioBtn.disabled = true;
-    speaking = true;
-
-    // Stop any ongoing speech
-    synthesis.cancel();
-
-    // Create a new utterance
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    utterance.lang = 'ja-JP';
-    
-    if (japaneseVoice) {
-        utterance.voice = japaneseVoice;
-    }
-    
-    // Enable button after speech ends
-    utterance.onend = () => {
-        audioBtn.disabled = false;
-        speaking = false;
-    };
-
-    // Enable button if error occurs
-    utterance.onerror = () => {
-        audioBtn.disabled = false;
-        speaking = false;
-        console.error('Speech synthesis error');
-    };
-
-    // Speak the word
-    synthesis.speak(utterance);
-}
+            if (!textToSpeak) return;
+        
+            const audioBtn = mode === 'flashcards' 
+                ? document.getElementById('flash-card-audio-btn')
+                : document.getElementById('audio-btn');
+            
+            audioBtn.disabled = true;
+            speaking = true;
+        
+            // Stop any ongoing speech
+            synthesis.cancel();
+        
+            // Create a new utterance
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = 'ja-JP';
+            
+            if (japaneseVoice) {
+                utterance.voice = japaneseVoice;
+            }
+            
+            // Enable button after speech ends
+            utterance.onend = () => {
+                audioBtn.disabled = false;
+                speaking = false;
+            };
+        
+            // Enable button if error occurs
+            utterance.onerror = () => {
+                audioBtn.disabled = false;
+                speaking = false;
+                console.error('Speech synthesis error');
+            };
+        
+            // Speak the word
+            synthesis.speak(utterance);
+        }
 
         function showQuestion() {
-    const question = currentQuestions[currentQuestionIndex];
-    document.getElementById('question').textContent = `Translate (${question.category}): ${question.question}`;
-    document.getElementById('answer').value = '';
-    document.getElementById('result').textContent = '';
-    document.getElementById('answer').focus();
-
-    const submitBtn = document.getElementById('submit-btn');
-    submitBtn.textContent = 'Submit';
-    submitBtn.style.backgroundColor = '#4CAF50';
-    submitBtn.onclick = checkAnswer;
-
-    // Show audio button for Japanese to English mode
-    const audioBtn = document.getElementById('audio-btn');
-    const mode = document.getElementById('mode').value;
-    audioBtn.style.display = mode === 'jp_to_en' ? 'block' : 'none';
-    audioBtn.disabled = false;
-
-    if (mode === 'jp_to_en') {
-        // Small delay to ensure the audio button is visible
-        setTimeout(playAudio, 300);
-    }
-}
+            const question = currentQuestions[currentQuestionIndex];
+            document.getElementById('question').textContent = `Translate (${question.category}): ${question.question}`;
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('answer').focus();
+        
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.textContent = 'Submit';
+            submitBtn.style.backgroundColor = '#4CAF50';
+            submitBtn.onclick = checkAnswer;
+        
+            // Show audio button for Japanese to English mode
+            const audioBtn = document.getElementById('audio-btn');
+            const mode = document.getElementById('mode').value;
+            audioBtn.style.display = mode === 'jp_to_en' ? 'block' : 'none';
+            audioBtn.disabled = false;
+        
+            if (mode === 'jp_to_en') {
+                // Small delay to ensure the audio button is visible
+                setTimeout(playAudio, 300);
+            }
+        }
 
         function checkEnter(event) {
             if (event.key === 'Enter') {
