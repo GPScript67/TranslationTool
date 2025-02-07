@@ -172,6 +172,22 @@
         .mode-select {
             margin-bottom: 20px;
         }
+        .exit-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+        }
+        .exit-button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -206,6 +222,7 @@
         
         <!-- Quiz Container -->
         <div class="quiz-container" id="quiz-container">
+            <button class="exit-button" onclick="exitStudy()">Exit</button>
             <div class="question" id="question"></div>
             <div class="quiz-controls">
                 <button class="audio-button" id="audio-btn" onclick="playAudio()">🔊</button>
@@ -218,6 +235,7 @@
 
         <!-- Flash Card Container -->
         <div class="flash-card-container" id="flash-card-container" style="display: none;">
+            <button class="exit-button" onclick="exitStudy()">Exit</button>
             <div class="flash-card" id="flash-card" onclick="flipCard()">
                 <div class="flash-card-inner">
                     <div class="flash-card-front"></div>
@@ -495,6 +513,19 @@
         function updateScore() {
             document.getElementById('score').textContent = `Score: ${score}/${currentQuestionIndex}`;
         }
+        function exitStudy() {
+        if (synthesis && speaking) {
+            synthesis.cancel();
+            speaking = false;
+        }
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('flash-card-container').style.display = 'none';
+        document.getElementById('settings').style.display = 'block';
+        document.getElementById('answer').value = '';
+        document.getElementById('result').textContent = '';
+        currentQuestionIndex = 0;
+        score = 0;
+    }
     </script>
 </body>
 </html>
