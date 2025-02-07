@@ -105,16 +105,7 @@
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
-        let voices = [];
 
-        function loadVoices() {
-            voices = speechSynthesis.getVoices();
-        }
-        
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = loadVoices;
-        }
-        
         async function startQuiz() {
             const direction = document.getElementById('direction').value;
             const categoriesSelect = document.getElementById('categories');
@@ -151,18 +142,20 @@
             document.getElementById('answer').focus();
 
             if (document.getElementById('direction').value === 'jp_to_en') {
-                speakJapanese(question.question);
+                setTimeout(() => speakJapanese(question.question), 500);
             }
         }
 
         function speakJapanese(text) {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'ja-JP';
-            utterance.voice = voices.find(voice => voice.lang === 'ja-JP');
+            utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'ja-JP');
             speechSynthesis.speak(utterance);
         }
 
-        loadVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+            speechSynthesis.getVoices();
+        };
     </script>
 </body>
 </html>
