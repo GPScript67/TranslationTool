@@ -1,7 +1,6 @@
 # api/index.py
 from flask import Flask, render_template, request, jsonify
 import random
-from urllib.parse import quote
 
 app = Flask(__name__)
 
@@ -50,15 +49,10 @@ def get_quiz():
     quiz_questions = []
     for jp, en, category in questions:
         if direction == 'jp_to_en':
-            # Create TTS URL for Japanese word
-            encoded_word = quote(jp)
-            audio_url = f'https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q={encoded_word}'
-            
             quiz_questions.append({
                 'question': jp,
                 'answer': en,
-                'category': category,
-                'audio_url': audio_url
+                'category': category
             })
         else:
             quiz_questions.append({
