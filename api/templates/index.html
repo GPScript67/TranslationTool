@@ -17,6 +17,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;  /* Add this line */
         }
         h1 {
             color: #333;
@@ -179,27 +180,27 @@
             margin-bottom: 20px;
         }
         .exit-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    width: auto;
-    z-index: 10;
-}
-
-.exit-button:hover {
-    background-color: #c82333;
-}
+            position: absolute;
+            top: 20px;          /* Match the container's padding */
+            right: 20px;        /* Match the container's padding */
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+            z-index: 10;
+        }
+        .exit-button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <button class="exit-button" onclick="exitStudy()">Exit</button>
         <h1>Japanese Vocabulary Study</h1>
         
         <div id="speech-not-supported">
