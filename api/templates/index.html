@@ -531,18 +531,19 @@
             document.getElementById('score').textContent = `Score: ${score}/${currentQuestionIndex}`;
         }
         function exitStudy() {
-        if (synthesis && speaking) {
-            synthesis.cancel();
-            speaking = false;
+            if (synthesis && speaking) {
+                synthesis.cancel();
+                speaking = false;
+            }
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('flash-card-container').style.display = 'none';
+            document.getElementById('settings').style.display = 'block';
+            document.querySelector('.exit-button').style.display = 'none';  // This is the important line
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            currentQuestionIndex = 0;
+            score = 0;
         }
-        document.getElementById('quiz-container').style.display = 'none';
-        document.getElementById('flash-card-container').style.display = 'none';
-        document.getElementById('settings').style.display = 'block';
-        document.getElementById('answer').value = '';
-        document.getElementById('result').textContent = '';
-        currentQuestionIndex = 0;
-        score = 0;
-    }
     </script>
 </body>
 </html>
