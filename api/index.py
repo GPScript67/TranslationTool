@@ -17,21 +17,22 @@ def load_vocabulary():
                 if category not in vocabulary:
                     vocabulary[category] = []
                     
-                japanese_text = row['japanese']
+                japanese_text = row['kanji']
                 if row['kana']:
-                    japanese_text = f"{row['japanese']} ({row['kana']})"
+                    japanese_text = f"{row['kanji']} ({row['kana']})"
                     
                 vocabulary[category].append({
                     'english': row['english'],
                     'japanese': japanese_text,
-                    'kanji': row['japanese'],
+                    'kanji': row['kanji'],
+                    'kana': row['kana']
                 })
     except FileNotFoundError:
         print(f"Error: Could not find file at {file_path}")
-        vocabulary = {"Default": [{"english": "test", "japanese": "テスト", "kanji": "テスト"}]}
+        vocabulary = {"Default": [{"english": "test", "japanese": "テスト", "kanji": "テスト", "kana": ""}]}
     except Exception as e:
         print(f"Error loading vocabulary: {str(e)}")
-        vocabulary = {"Default": [{"english": "test", "japanese": "テスト", "kanji": "テスト"}]}
+        vocabulary = {"Default": [{"english": "test", "japanese": "テスト", "kanji": "テスト", "kana": ""}]}
     
     return vocabulary
 
@@ -60,7 +61,8 @@ def get_words():
             'japanese': word[0]['japanese'],
             'english': word[0]['english'],
             'category': word[1],
-            'kanji': word[0]['kanji']
+            'kanji': word[0]['kanji'],
+            'kana': word[0]['kana']
         } for word in words])
     
     else:
@@ -84,14 +86,16 @@ def get_words():
                     'question': word['japanese'],
                     'answer': word['english'],
                     'category': category,
-                    'kanji': word['kanji']
+                    'kanji': word['kanji'],
+                    'kana': word['kana']
                 })
             else:
                 quiz_questions.append({
                     'question': word['english'],
                     'answer': word['japanese'],
                     'category': category,
-                    'kanji': word['kanji']
+                    'kanji': word['kanji'],
+                    'kana': word['kana']
                 })
         
         return jsonify(quiz_questions)
