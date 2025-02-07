@@ -324,15 +324,21 @@
                     mode: 'flashcards'
                 })
             });
-
+        
+            // Get the cards and shuffle them
             flashCards = await response.json();
+            // Shuffle the cards using Fisher-Yates algorithm
+            for (let i = flashCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashCards[i], flashCards[j]] = [flashCards[j], flashCards[i]];
+            }
             currentCardIndex = 0;
-
+        
             document.getElementById('settings').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'none';
             document.getElementById('flash-card-container').style.display = 'block';
             document.getElementById('flash-card-audio-btn').style.display = 'block';
-
+        
             showCurrentCard();
         }
 
