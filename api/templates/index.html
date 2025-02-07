@@ -81,7 +81,7 @@
             height: 40px;
             cursor: pointer;
             margin: 10px auto;
-            display: none;
+            display: block;
             padding: 0;
             font-size: 20px;
         }
@@ -359,7 +359,6 @@
             document.getElementById('flash-card-container').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'block';
             
-            // Show audio button for Japanese to English mode
             const audioBtn = document.getElementById('audio-btn');
             audioBtn.style.display = direction === 'jp_to_en' ? 'block' : 'none';
             
@@ -439,6 +438,7 @@
             if (direction === 'jp_to_en') {
                 setTimeout(playAudio, 500);
             }
+        }
 
         function checkEnter(event) {
             if (event.key === 'Enter') {
