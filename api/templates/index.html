@@ -234,7 +234,11 @@
     </div>
 
     <script>
-        // Previous variables remain
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let synthesis = window.speechSynthesis;
+        let speaking = false;
         let flashCards = [];
         let currentCardIndex = 0;
 
