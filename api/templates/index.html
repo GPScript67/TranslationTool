@@ -181,8 +181,8 @@
         }
         .exit-button {
             position: absolute;
-            top: 20px;          /* Match the container's padding */
-            right: 20px;        /* Match the container's padding */
+            top: 20px;
+            right: 20px;
             background-color: #dc3545;
             color: white;
             border: none;
@@ -192,6 +192,7 @@
             font-size: 14px;
             width: auto;
             z-index: 10;
+            display: none;  /* Hide by default */
         }
         .exit-button:hover {
             background-color: #c82333;
@@ -325,6 +326,7 @@
             currentCardIndex = 0;
         
             document.getElementById('settings').style.display = 'none';
+            document.querySelector('.exit-button').style.display = 'block';  // Add this line
             document.getElementById('quiz-container').style.display = 'none';
             document.getElementById('flash-card-container').style.display = 'block';
             document.getElementById('flash-card-audio-btn').style.display = 'block';
@@ -376,36 +378,38 @@
         }
 
         async function startQuiz(direction, categories) {
-    const numQuestions = document.getElementById('num_questions').value;
-
-    const response = await fetch('/get_words', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            direction: direction,
-            categories: categories,
-            num_questions: numQuestions,
-            mode: 'quiz'
-        })
-    });
-
-    currentQuestions = await response.json();
-    currentQuestionIndex = 0;
-    score = 0;
-
-    document.getElementById('settings').style.display = 'none';
-    document.getElementById('flash-card-container').style.display = 'none';
-    document.getElementById('quiz-container').style.display = 'block';
-    
-    // Show audio button for Japanese to English mode
-    const audioBtn = document.getElementById('audio-btn');
-    audioBtn.style.display = direction === 'jp_to_en' ? 'block' : 'none';
-    
-    updateScore();
-    showQuestion();
-}
+            const numQuestions = document.getElementById('num_questions').value;
+        
+            const response = await fetch('/get_words', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    direction: direction,
+                    categories: categories,
+                    num_questions: numQuestions,
+                    mode: 'quiz'
+                })
+            });
+        
+            currentQuestions = await response.json();
+            currentQuestionIndex = 0;
+            score = 0;
+        
+            
+            document.querySelector('.exit-button').style.display = 'block';  
+            document.getElementById('settings').style.display = 'none';
+            document.getElementById('flash-card-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            
+            // Show audio button for Japanese to English mode
+            const audioBtn = document.getElementById('audio-btn');
+            audioBtn.style.display = direction === 'jp_to_en' ? 'block' : 'none';
+            
+            updateScore();
+            showQuestion();
+        }
 
         function playAudio() {
     if (!synthesis || speaking) return;
