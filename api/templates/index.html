@@ -492,10 +492,15 @@
         }
 
         function checkEnter(event) {
-    if (event.key === 'Enter' && document.getElementById('submit-btn').textContent === 'Submit') {
-        checkAnswer();
-    }
-}
+            if (event.key === 'Enter') {
+                const submitBtn = document.getElementById('submit-btn');
+                // Only submit if the button says "Submit" (not "Next" or "Finish Quiz")
+                if (submitBtn.textContent === 'Submit') {
+                    checkAnswer();
+                }
+                // Do nothing if the button says "Next" or "Finish Quiz"
+            }
+        }
 
         function checkAnswer() {
             const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
